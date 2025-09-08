@@ -5,6 +5,7 @@ public class PlatformerMovement : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private Animator _animator;
+    private PlayerLife _playerLife;
     
     public Transform groundChecker;
     public LayerMask groundLayer;
@@ -26,6 +27,7 @@ public class PlatformerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _playerLife = GetComponent<PlayerLife>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,11 +38,11 @@ public class PlatformerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_playerLife.isAlive) return;
         _horizontal = Input.GetAxis("Horizontal");
 
         if (IsGrounded())
         {
-            _animator.SetBool("isGrounded", true);
             _jumps = 0;
         }
         
@@ -48,12 +50,14 @@ public class PlatformerMovement : MonoBehaviour
         {
             _jumpToConsume = true;
         }
-        
-        //SetAnimation();
+
+        FlipPlayer();
+        UpdateAnimation();
     }
 
     void FixedUpdate()
     {
+        if (!_playerLife.isAlive) return;
         _rb.linearVelocity = new Vector2(_horizontal * speed , _rb.linearVelocity.y);
         
         if (_jumpToConsume)
@@ -63,20 +67,49 @@ public class PlatformerMovement : MonoBehaviour
         
     }
 
-    void SetAnimation()
+    void FlipPlayer()
     {
-        if (_rb.linearVelocity.x > -0.1f && _rb.linearVelocity.x < 0.1f) // x == 0
+        if (_rb.linearVelocity.x > 0)
         {
-            Debug.Log("Player Idle");
-            _animator.Play("Player Idle");
+            transform.localScale = new Vector3(1,1,1);
         }
 
-        if (_rb.linearVelocity.x < -0.1f && _rb.linearVelocity.x > 0.1f) // x != 0
+        if (_rb.linearVelocity.x < 0)
         {
-            Debug.Log("Player Run");
-            _animator.Play("Player Run");
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+    
+    void UpdateAnimation()
+    {
+        if (_rb.linearVelocity.x == 0)
+        {
+            _animator.SetBool("isRunning", false);
+        }
+        else
+        {
+            _animator.SetBool("isRunning", true);
+        }
+
+        if (_rb.linearVelocity.y == 0 && IsGrounded())
+        {
+            _animator.SetBool("isJumping", false);
+            _animator.SetBool("isFalling", false);
+        }
+        
+        if (_rb.linearVelocity.y > 0 && !IsGrounded())
+        {
+            _animator.SetBool("isJumping", true);
+            _animator.SetBool("isFalling", false);
+        }
+
+        if (_rb.linearVelocity.y < 0 && !IsGrounded())
+        {
+            _animator.SetBool("isFalling", true);
+            _animator.SetBool("isJumping", false);
+        }
+    }
+    
     void ExecuteJump()
     {
         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);

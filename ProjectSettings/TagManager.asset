@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Spike
+  - Fruit
   layers:
   - Default
   - TransparentFX
@@ -38,14 +40,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 416575777
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Sqaure
-    uniqueID: 416575777
-    locked: 0
-  - name: Frog
+  - name: Player
     uniqueID: 244123755
+    locked: 0
+  - name: Spike
+    uniqueID: 462299173
     locked: 0
   m_RenderingLayers:
   - Default
