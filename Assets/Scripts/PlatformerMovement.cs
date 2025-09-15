@@ -19,12 +19,11 @@ public class PlatformerMovement : MonoBehaviour
 
     private bool _jumpToConsume;
 
-    private bool _isGrounded;
-
     private int _jumps;
 
     private void Awake()
     {
+        
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _playerLife = GetComponent<PlayerLife>();
@@ -119,7 +118,7 @@ public class PlatformerMovement : MonoBehaviour
 
     bool IsGrounded()
     {
-        bool isGrounded = Physics2D.OverlapCircle(groundChecker.position, radius, groundLayer);
-        return isGrounded;
+        bool groundCheck = Physics2D.OverlapCircle(groundChecker.position, radius, groundLayer);
+        return groundCheck;
     }
 }

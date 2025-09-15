@@ -6,6 +6,9 @@ public class PlayerCollect : MonoBehaviour
 {
     public int fruitsCollected = 0;
 
+    public AudioManager audioManager;
+    public AudioClip collectClip;
+    
     public TextMeshProUGUI fruitsText;
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -15,5 +18,9 @@ public class PlayerCollect : MonoBehaviour
         fruitsText.text = fruitsCollected.ToString();
         
         Destroy(other.gameObject);
+        
+        // play collect-sfx
+        audioManager.sfxSource.PlayOneShot(collectClip);
+        
     }
 }

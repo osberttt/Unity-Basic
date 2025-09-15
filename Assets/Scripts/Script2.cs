@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class Script2 : MonoBehaviour
+public class Script2 : Script1
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        
+        Debug.Log(f(5));
     }
 
-    // Update is called once per frame
-    void Update()
+    public override int f(int x)
     {
-        Debug.Log("Script 2 Update");
+        return x * 2;
     }
 }
