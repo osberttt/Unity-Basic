@@ -6,7 +6,7 @@ public class PlayerCollect : MonoBehaviour
 {
     public int fruitsCollected = 0;
 
-    public AudioManager audioManager;
+   
     public AudioClip collectClip;
     
     public TextMeshProUGUI fruitsText;
@@ -20,7 +20,7 @@ public class PlayerCollect : MonoBehaviour
         Destroy(other.gameObject);
         
         // play collect-sfx
-        audioManager.sfxSource.PlayOneShot(collectClip);
+        AudioManager.Instance.PlaySFX(collectClip);
         
     }
 }

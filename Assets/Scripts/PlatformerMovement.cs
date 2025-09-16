@@ -10,6 +10,8 @@ public class PlatformerMovement : MonoBehaviour
     public Transform groundChecker;
     public LayerMask groundLayer;
 
+    public ParticleSystem footstepsParticles;
+
     public float radius = 0.2f;
     
     public float speed = 5f;
@@ -20,6 +22,8 @@ public class PlatformerMovement : MonoBehaviour
     private bool _jumpToConsume;
 
     private int _jumps;
+
+    private bool _isFacingRight = true;
 
     private void Awake()
     {
@@ -70,12 +74,22 @@ public class PlatformerMovement : MonoBehaviour
     {
         if (_rb.linearVelocity.x > 0)
         {
+            if (!_isFacingRight)
+            {
+                footstepsParticles.Play();
+            }
             transform.localScale = new Vector3(1,1,1);
+            _isFacingRight = true;
         }
 
         if (_rb.linearVelocity.x < 0)
         {
+            if (_isFacingRight)
+            {
+                footstepsParticles.Play();
+            }
             transform.localScale = new Vector3(-1, 1, 1);
+            _isFacingRight = false;
         }
     }
     
@@ -112,6 +126,7 @@ public class PlatformerMovement : MonoBehaviour
     void ExecuteJump()
     {
         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+        footstepsParticles.Play();
         _jumps = _jumps + 1;
         _jumpToConsume = false;
     }
@@ -121,4 +136,6 @@ public class PlatformerMovement : MonoBehaviour
         bool groundCheck = Physics2D.OverlapCircle(groundChecker.position, radius, groundLayer);
         return groundCheck;
     }
+    
+    // reverse engineering
 }
