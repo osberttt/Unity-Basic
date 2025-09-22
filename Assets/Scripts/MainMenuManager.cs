@@ -10,7 +10,15 @@ public class MainMenuManager : MonoBehaviour
     public Slider sfxSlider;
 
     public GameObject optionsPanel;
-    
+
+    private void Start()
+    {
+        var musicVolume = SaveManager.GetMusicVolume();
+        var sfxVolume = SaveManager.GetSfxVolume();
+        musicSlider.value = musicVolume;
+        sfxSlider.value = sfxVolume;
+    }
+
     public void Play()
     {
         SceneManager.LoadScene("Platformer");
@@ -24,6 +32,8 @@ public class MainMenuManager : MonoBehaviour
     public void OptionsOff()
     {
         optionsPanel.SetActive(false);
+        SaveManager.SaveMusicVolume(musicSlider.value);
+        SaveManager.SaveSfxVolume(sfxSlider.value);
     }
 
     public void Quit()
