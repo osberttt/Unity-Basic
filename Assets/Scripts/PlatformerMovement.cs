@@ -4,8 +4,8 @@ using UnityEngine;
 public class PlatformerMovement : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    private Animator _animator;
-    private PlayerLife _playerLife;
+    protected Animator _animator;
+    protected PlayerLife _playerLife;
     
     public Transform groundChecker;
     public LayerMask groundLayer;
@@ -17,11 +17,11 @@ public class PlatformerMovement : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 5f;
 
-    private float _horizontal;
+    protected float _horizontal;
 
-    private bool _jumpToConsume;
+    protected bool _jumpToConsume;
 
-    private int _jumps;
+    protected int _jumps;
 
     private bool _isFacingRight = true;
 
@@ -39,7 +39,7 @@ public class PlatformerMovement : MonoBehaviour
         
     }
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         if (!_playerLife.isAlive) return;
         _horizontal = Input.GetAxis("Horizontal");
@@ -70,7 +70,7 @@ public class PlatformerMovement : MonoBehaviour
         
     }
 
-    void FlipPlayer()
+    protected void FlipPlayer()
     {
         if (_rb.linearVelocity.x > 0)
         {
@@ -93,7 +93,7 @@ public class PlatformerMovement : MonoBehaviour
         }
     }
     
-    void UpdateAnimation()
+    protected virtual void UpdateAnimation()
     {
         if (_rb.linearVelocity.x == 0)
         {
@@ -131,7 +131,7 @@ public class PlatformerMovement : MonoBehaviour
         _jumpToConsume = false;
     }
 
-    bool IsGrounded()
+    protected bool IsGrounded()
     {
         bool groundCheck = Physics2D.OverlapCircle(groundChecker.position, radius, groundLayer);
         return groundCheck;
